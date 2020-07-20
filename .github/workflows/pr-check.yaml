@@ -22,7 +22,7 @@ jobs:
     - name: Docker Buildx
       uses: crazy-max/ghaction-docker-buildx@v1.4.0
       with:
-        buildx-version: v0.4.1
+        version: v0.4.1
     - name: Clone source code
       uses: actions/checkout@v1
       with:
