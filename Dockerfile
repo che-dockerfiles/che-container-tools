@@ -8,7 +8,28 @@
 # Contributors:
 #   Red Hat, Inc. - initial API and implementation
 
-FROM quay.io/buildah/stable:v1.14.8
+FROM fedora:latest
+
+# From: https://github.com/containers/buildah/blob/master/contrib/buildahimage/stable/Dockerfile
+# buildah doesn't publish multi-arch images, so we need to replicate them here
+
+# Don't include container-selinux and remove
+# directories used by yum that are just taking
+# up space.
+RUN useradd build; yum -y update; yum -y reinstall shadow-utils; yum -y install buildah fuse-overlayfs --exclude container-selinux; rm -rf /var/cache /var/log/dnf* /var/log/yum.*;
+
+ADD https://raw.githubusercontent.com/containers/buildah/master/contrib/buildahimage/stable/containers.conf /etc/containers/
+
+# Adjust storage.conf to enable Fuse storage.
+RUN chmod 644 /etc/containers/containers.conf; sed -i -e 's|^#mount_program|mount_program|g' -e '/additionalimage.*/a "/var/lib/shared",' -e 's|^mountopt[[:space:]]*=.*$|mountopt = "nodev,fsync=0"|g' /etc/containers/storage.conf
+RUN mkdir -p /var/lib/shared/overlay-images /var/lib/shared/overlay-layers /var/lib/shared/vfs-images /var/lib/shared/vfs-layers; touch /var/lib/shared/overlay-images/images.lock; touch /var/lib/shared/overlay-layers/layers.lock; touch /var/lib/shared/vfs-images/images.lock; touch /var/lib/shared/vfs-layers/layers.lock
+
+# Set an environment variable to default to chroot isolation for RUN
+# instructions and "buildah run".
+ENV BUILDAH_ISOLATION=chroot
+
+
+# Che steps: set up entrypoint, download deps
 
 ENV KUBECTL_VERSION=v1.18.6
 ENV HELM_VERSION=v3.2.4
