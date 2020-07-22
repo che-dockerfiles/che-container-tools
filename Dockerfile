@@ -22,8 +22,8 @@ RUN mkdir /projects ${HOME} && \
       chmod -R g+rwX ${f}; \
     done && \
     export ARCH="$(uname -m)" && if [[ ${ARCH} == "x86_64" ]]; then export ARCH_K8S_HELM="amd64"; elif [[ ${ARCH} == "aarch64" ]]; \
-      then export ARCH_K8S_HELM="arm64"; elif [[ ${ARCH} == "s390x" ]]; then export ARCH_K8S_HELM="s390x"; elif [[ ${ARCH} == "ppcle64" ]]; \
-      then export ARCH_K8S_HELM="ppcle64"; fi && \
+      then export ARCH_K8S_HELM="arm64"; elif [[ ${ARCH} == "s390x" ]]; then export ARCH_K8S_HELM="s390x"; elif [[ ${ARCH} == "ppc64le" ]]; \
+      then export ARCH_K8S_HELM="ppc64le"; fi && \
     curl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/${ARCH_K8S_HELM}/kubectl -o /usr/local/bin/kubectl && \
     curl -o- -L https://get.helm.sh/helm-${HELM_VERSION}-linux-${ARCH_K8S_HELM}.tar.gz | tar xvz -C /usr/local/bin --strip 1 && \
     export ARCH_TEKTON="$(uname -m)" && \
