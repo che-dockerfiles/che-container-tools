@@ -27,6 +27,7 @@ RUN mkdir /projects ${HOME} && \
     curl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/${ARCH_K8S_HELM}/kubectl -o /usr/local/bin/kubectl && \
     curl -o- -L https://get.helm.sh/helm-${HELM_VERSION}-linux-${ARCH_K8S_HELM}.tar.gz | tar xvz -C /usr/local/bin --strip 1 && \
     export ARCH_TEKTON="$(uname -m)" && \
+    echo $ARCH_TEKTON && \
     curl -LO https://github.com/tektoncd/cli/releases/download/v${TEKTONCD_VERSION}/tkn_${TEKTONCD_VERSION}_Linux_${ARCH_TEKTON}.tar.gz && \
     tar xvzf tkn_${TEKTONCD_VERSION}_Linux_${ARCH_TEKTON}.tar.gz -C /usr/local/bin/ tkn && \
     chmod +x /usr/local/bin/kubectl /usr/local/bin/helm /usr/local/bin/tkn
