@@ -20,7 +20,6 @@ This repository uses an automatic GitHub Action which will build, tag, and push 
 This repository supports multiple architecture builds. To add a platform, edit the PLATFORMS file and add your desired platform. Currently this plugin sidecar supports the following architectures:
  
  - linux/amd64
- - linux/amd64
  - linux/ppc64le
  - linux/s390x
  - linux/arm64
