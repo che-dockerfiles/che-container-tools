@@ -16,7 +16,7 @@ FROM fedora:latest
 # Don't include container-selinux and remove
 # directories used by yum that are just taking
 # up space.
-RUN useradd build; yum -y update; yum -y reinstall shadow-utils; yum -y install buildah fuse-overlayfs --exclude container-selinux; rm -rf /var/cache /var/log/dnf* /var/log/yum.*;
+RUN useradd build; yum -y update; yum -y reinstall shadow-utils; yum -y install which nodejs buildah fuse-overlayfs --exclude container-selinux; rm -rf /var/cache /var/log/dnf* /var/log/yum.*;
 
 ADD https://raw.githubusercontent.com/containers/buildah/master/contrib/buildahimage/stable/containers.conf /etc/containers/
 
@@ -41,7 +41,6 @@ RUN mkdir /projects ${HOME} && \
       echo "Changing permissions on ${f}" && chgrp -R 0 ${f} && \
       chmod -R g+rwX ${f}; \
     done && \
-    dnf install -y which nodejs && \
     export ARCH_K8S_HELM="$(uname -m)" && if [[ ${ARCH_K8S_HELM} == "x86_64" ]]; then export ARCH_K8S_HELM="amd64"; elif [[ ${ARCH_K8S_HELM} == "aarch64" ]]; \
       then export ARCH_K8S_HELM="arm64"; fi && \
     curl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/${ARCH_K8S_HELM}/kubectl -o /usr/local/bin/kubectl && \
